@@ -97,6 +97,7 @@ const Dis = styled.p`
   font-size: 11px;
   margin: 0 0 24px;
   line-height: 1.5;
+  font-weight: bold;
 `;
 const CTALogoTwo = styled.img`
   max-width: 600px;
