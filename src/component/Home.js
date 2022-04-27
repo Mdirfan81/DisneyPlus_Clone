@@ -51,7 +51,7 @@ const Home = (props) => {
       return [recommendArr, newDisneyArr, newMovieArr, trendingArr];
     }
     let result = addMovies(movieData.movies);
-    // console.log(result);
+    console.log(result);
     dispatch(
       setMovies({
         recommend: result[0],

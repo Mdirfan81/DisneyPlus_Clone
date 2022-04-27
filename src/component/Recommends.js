@@ -12,14 +12,18 @@ import { useSelector } from "react-redux";
 // export default
 function Recommends({ Headline, data }) {
   let url = "";
+  const handleClick = (e) => {
+    // e.preventdefault();
+    console.log(e.target);
+  };
   return (
     <Container>
       <Name>{Headline}</Name>
       <Content>
         {data &&
           data.map((movie, key) => (
-            <Wrap key={key}>
-              <Link to={"/detail/" + movie.id}>
+            <Wrap key={key} onClick={handleClick}>
+              <Link to={"/detail/" + movie.title + "%2B" + Headline}>
                 <img src={movie.cardImg} alt={movie.title} />
               </Link>
             </Wrap>
