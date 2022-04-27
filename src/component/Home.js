@@ -5,21 +5,36 @@ import Viewers from "./Viewers";
 import Recommends from "./Recommends";
 import movieData from "../disneyPlusData.json";
 import { useDispatch, useSelector } from "react-redux";
-import { setMovies } from "../features/movie/movieSlice";
+// import db from "../firebase";
+import {
+  setMovies,
+  selectNewDisney,
+  selectOriginal,
+  selectRecommend,
+  selectTrending,
+} from "../features/movie/movieSlice";
 import { original } from "@reduxjs/toolkit";
-import { selectUserName } from "../features/user/userSlice";
+import userSlice, { selectUserName } from "../features/user/userSlice";
 
 const Home = (props) => {
   const dispatch = useDispatch();
 
   const userName = useSelector(selectUserName);
-
+  const newDisney = useSelector(selectNewDisney);
+  const original = useSelector(selectOriginal);
+  const recommend = useSelector(selectRecommend);
+  const trending = useSelector(selectTrending);
   useEffect(() => {
     function addMovies(data) {
       let newMovieArr = [];
       let recommendArr = [];
       let newDisneyArr = [];
       let trendingArr = [];
+      // db.collection("movies").onSnapshot((snapshot) => {
+      //   snapshot.doc.map((doc) => {
+      //     console.log({ doc });
+      //   });
+      // });
       for (let movie in data) {
         if (data[movie]["type"] === "new") {
           newMovieArr.push(data[movie]);
@@ -31,40 +46,30 @@ const Home = (props) => {
           newDisneyArr.push(data[movie]);
         }
       }
-      dispatch(
-        setMovies({
-          recommend: recommendArr,
-          newDisney: newDisneyArr,
-          original: newMovieArr,
-          trending: trendingArr,
-        })
-      );
-      console.log(recommendArr, newDisneyArr, newMovieArr, trendingArr);
+
+      // console.log(recommendArr, newDisneyArr, newMovieArr, trendingArr);
+      return [recommendArr, newDisneyArr, newMovieArr, trendingArr];
     }
-    addMovies(movieData.movies);
+    let result = addMovies(movieData.movies);
+    // console.log(result);
+    dispatch(
+      setMovies({
+        recommend: result[0],
+        newDisney: result[2],
+        original: result[1],
+        trending: result[3],
+      })
+    );
   }, [userName]);
-  // console.log(movieData.movies);
 
   return (
     <Container>
       <ImgSlider />
       <Viewers />
-      <Recommends
-        Headline="Recommended for You"
-        url="https://wallpapercave.com/wp/wp8772589.jpg"
-      />
-      <Recommends
-        Headline="New to Disney+"
-        url="https://images7.alphacoders.com/973/973877.jpg"
-      />
-      <Recommends
-        Headline="Originals"
-        url="https://wallpapercave.com/wp/wp3883316.jpg"
-      />
-      <Recommends
-        Headline="Trending"
-        url="https://wallpaper.dog/large/20503666.jpg"
-      />
+      <Recommends Headline="Recommended for You" data={recommend} />
+      <Recommends Headline="New to Disney+" data={newDisney} />
+      <Recommends Headline="Originals" data={original} />
+      <Recommends Headline="Trending" data={trending} />
     </Container>
   );
 };

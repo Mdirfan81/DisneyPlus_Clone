@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import {
@@ -9,37 +9,35 @@ import {
 } from "../features/movie/movieSlice";
 import { useSelector } from "react-redux";
 
-export default function Recommends({ Headline, url }) {
-  // const newDisneyData = useSelector(selectNewDisney);
-  // const recommendData = useSelector(selectRecommend);
-  // console.log({ recommendData });
-  // const originalData = useSelector(selectOriginal);
-  // const trendingData = useSelector(selectTrending);
-  // let url = "";
+// export default
+function Recommends({ Headline, data }) {
+  let url = "";
   return (
     <Container>
       <Name>{Headline}</Name>
       <Content>
-        <Wrap>
-          <Link to="/">
-            <img src={url} alt="" />
-          </Link>
-        </Wrap>
-        <Wrap>
-          <Link to="/">
-            <img src={url} alt="" />
-          </Link>
-        </Wrap>
-        <Wrap>
-          <Link to="/">
-            <img src={url} alt="" />
-          </Link>
-        </Wrap>
-        <Wrap>
-          <Link to="/">
-            <img src={url} alt="" />
-          </Link>
-        </Wrap>
+        {data &&
+          data.map((movie, key) => (
+            <Wrap key={key}>
+              <Link to={"/detail/" + movie.id}>
+                <img src={movie.cardImg} alt={movie.title} />
+              </Link>
+            </Wrap>
+          ))}
+        {/* ==========================> OR <==================== */}
+        {/* {data ? (
+          data.map((data, index) => {
+            return (
+              <Wrap>
+                <Link to="/">
+                  <img src={data.backgroundImg} alt={data.title} />
+                </Link>
+              </Wrap>
+            );
+          })
+        ) : (
+          <h1>Loading</h1>
+        )} */}
       </Content>
     </Container>
   );
@@ -92,3 +90,5 @@ const Name = styled.h3`
   font-weight: bold;
   font-size: 20px;
 `;
+
+export default Recommends;

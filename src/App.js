@@ -5,6 +5,7 @@ import "./App.css";
 import Login from "./component/Login";
 import Header from "./component/Header";
 import Home from "./component/Home";
+import Detail from "./component/Detail";
 
 function App() {
   return (
@@ -17,6 +18,9 @@ function App() {
           </Route>
           <Route path="/home">
             <Home />
+          </Route>
+          <Route path="/detail/:id">
+            <Detail />
           </Route>
         </Switch>
       </Router>
